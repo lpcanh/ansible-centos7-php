@@ -1,0 +1,21 @@
+---
+# tasks file for ansible-centos7-php
+- name: Add Webtatic EL yum repository
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    - https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+- name: Install php
+  yum:
+    name: php56w-fpm, php56w-cli, php56w-common, php56w-gd, php56w-mbstring, php56w-mcrypt, php56w-mysql, php56w-opcache, php56w-pdo, php56w-xml
+    state: latest
+
+- name: Copy default php-fpm pool
+  template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf backup=yes
+  notify: reload php-fpm
+
+- name: Make php-fpm start and enable when boot.
+  service: name=php-fpm state=started enabled=yes
