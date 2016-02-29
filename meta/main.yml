@@ -19,7 +19,7 @@ galaxy_info:
     - 7
   
   galaxy_tags:
-    - centos 7
+    - centos7
     - PHP
     - Drupal
 
